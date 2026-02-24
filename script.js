@@ -111,6 +111,10 @@ class App {
     // Handling clicks on map
     this.#map.on('click', this._showForm.bind(this));
 
+    this.#workouts.forEach(work => {
+      this._renderWorkoutMarker(work);
+    });
+  }
   }
 
   _showForm(mapE) {
@@ -181,8 +185,30 @@ class App {
     // Add new object to workout array
     this.#workouts.push(workout);
 
+    // Render workout on map as marker
+    this._renderWorkoutMarker(workout);
+
     this._hideForm();
   }
+
+  _renderWorkoutMarker(workout) {
+    L.marker(workout.coords)
+      .addTo(this.#map)
+      .bindPopup(
+        L.popup({
+          maxWidth: 250,
+          minWidth: 100,
+          autoClose: false,
+          closeOnClick: false,
+          className: `${workout.type}-popup`,
+        })
+      )
+      .setPopupContent(
+        `${workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${workout.description}`
+      )
+      .openPopup();
+  }
+
 }
 
 const app = new App();
