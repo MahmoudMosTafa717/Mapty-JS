@@ -80,8 +80,11 @@ class App {
     // Get user's position
     this._getPosition();
 
+    // Attach event handlers
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
+    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+  }
   }
 
   _getPosition() {
@@ -191,7 +194,10 @@ class App {
     // Render workout on list
     this._renderWorkout(workout);
 
+    // Hide form + clear input fields
     this._hideForm();
+
+    // Set local storage to all workouts
   }
 
   _renderWorkoutMarker(workout) {
@@ -261,6 +267,29 @@ class App {
       `;
 
     form.insertAdjacentHTML('afterend', html);
+  }
+
+  _moveToPopup(e) {
+    // BUGFIX: When we click on a workout before the map has loaded, we get an error. But there is an easy fix:
+    if (!this.#map) return;
+
+    const workoutEl = e.target.closest('.workout');
+
+    if (!workoutEl) return;
+
+    const workout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+
+    this.#map.setView(workout.coords, this.#mapZoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+
+    // using the public interface
+    // workout.click();
   }
 
 }
