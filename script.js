@@ -76,6 +76,7 @@ class App {
   #mapZoomLevel = 13;
   #mapEvent;
   #workouts = [];
+
   constructor() {
     // Get user's position
     this._getPosition();
@@ -87,7 +88,6 @@ class App {
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
-  }
   }
 
   _getPosition() {
@@ -120,7 +120,6 @@ class App {
     this.#workouts.forEach(work => {
       this._renderWorkoutMarker(work);
     });
-  }
   }
 
   _showForm(mapE) {
@@ -301,6 +300,22 @@ class App {
   }
 
   _getLocalStorage() {
+    const data = JSON.parse(localStorage.getItem('workouts'));
+
+    if (!data) return;
+
+    this.#workouts = data;
+
+    this.#workouts.forEach(work => {
+      this._renderWorkout(work);
+    });
+  }
+
+  reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
+  }
+}
 }
 
 const app = new App();
