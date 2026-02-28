@@ -62,6 +62,10 @@ class Cycling extends Workout {
   }
 }
 
+// const run1 = new Running([39, -12], 5.2, 24, 178);
+// const cycling1 = new Cycling([39, -12], 27, 95, 523);
+// console.log(run1, cycling1);
+
 ///////////////////////////////////////
 // APPLICATION ARCHITECTURE
 const form = document.querySelector('.form');
@@ -71,6 +75,7 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+
 class App {
   #map;
   #mapZoomLevel = 13;
@@ -315,7 +320,6 @@ class App {
     localStorage.removeItem('workouts');
     location.reload();
   }
-}
 }
 
 const app = new App();
